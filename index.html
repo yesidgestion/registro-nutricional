@@ -4,126 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Datos</title>
-
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f4f8;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            margin: 0;
-            padding: 1rem;
-        }
-        .container {
-            width: 100%;
-            max-width: 700px;
-            background: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        h1 {
-            font-size: 1.8rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-        select, input[type="text"], input[type="date"], input[type="number"] {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 1rem;
-        }
-        input[readonly] {
-            background-color: #e9ecef;
-            cursor: not-allowed;
-        }
-        .global-fields {
-            background: #f9f9f9;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        button {
-            width: 100%;
-            padding: 1rem;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        th, td {
-            text-align: left;
-            padding: 0.8rem;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f9f9f9;
-            font-size: 0.9rem;
-        }
-        td {
-            font-size: 0.9rem;
-        }
-        td input[type="number"] {
-            padding: 0.5rem;
-            margin-bottom: 0;
-        }
-        .hidden {
-            display: none;
-        }
-        #user-info {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: #555;
-        }
-        #loader {
-            text-align: center;
-            padding: 1rem;
-        }
-        .input-warning {
-            color: red;
-            font-weight: bold;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f4f8; color: #333; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 1rem; }
+        .container { width: 100%; max-width: 700px; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { font-size: 1.8rem; text-align: center; margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        select, input[type="text"], input[type="date"], input[type="number"] { width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; margin-bottom: 1rem; }
+        input[readonly] { background-color: #e9ecef; cursor: not-allowed; }
+        .global-fields { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        button { width: 100%; padding: 1rem; background-color: #007bff; color: white; border: none; border-radius: 4px; font-size: 1.2rem; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #0056b3; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; margin-bottom: 1.5rem; }
+        th, td { text-align: left; padding: 0.8rem; border-bottom: 1px solid #ddd; }
+        th { background-color: #f9f9f9; font-size: 0.9rem; }
+        td { font-size: 0.9rem; }
+        td input[type="number"] { padding: 0.5rem; margin-bottom: 0; }
+        .hidden { display: none; }
+        #user-info { display: flex; justify-content: space-between; align-items: center; text-align: center; margin-bottom: 1.5rem; color: #555; }
+        #logout-btn { background-color: #6c757d; font-size: 0.8rem; padding: 0.5rem 1rem; width: auto; margin-bottom: 0; }
+        #logout-btn:hover { background-color: #5a6268; }
+        #loader { text-align: center; padding: 1rem; }
+        .input-warning { color: red; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div id="app-container" class="hidden">
+            <div id="user-info">
+                <span id="welcome-message"></span>
+                <button id="logout-btn">Cerrar Sesión</button>
+            </div>
+            
             <h1>Registro de Datos</h1>
-            <div id="user-info"></div>
 
             <form id="data-form">
-                
                 <div class="global-fields">
                     <div class="grid-2">
                         <div>
@@ -137,10 +54,8 @@
                     </div>
                     <label for="fecha-vacunacion">Fecha verificación vacunación:</label>
                     <input type="date" id="fecha-vacunacion" name="fecha-vacunacion" required>
-
                     <label for="fecha-valoracion">Fecha de valoración antropométrica:</label>
                     <input type="date" id="fecha-valoracion" name="fecha-valoracion" required>
-                    
                     <label for="fecha-pb">Fecha de medición perímetro braquial:</label>
                     <input type="date" id="fecha-pb" name="fecha-pb" required>
                 </div>
@@ -178,33 +93,45 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- REFERENCIAS A ELEMENTOS DEL DOM ---
             const loginContainer = document.getElementById('login-container');
             const appContainer = document.getElementById('app-container');
-            const userInfo = document.getElementById('user-info');
+            const welcomeMessage = document.getElementById('welcome-message');
+            const logoutBtn = document.getElementById('logout-btn');
             const unitSelector = document.getElementById('service-unit');
             const tableBody = document.getElementById('beneficiaries-table-body');
             const loader = document.getElementById('loader');
             const dataForm = document.getElementById('data-form');
+            const monthSelector = document.getElementById('mes');
+            const yearInput = document.getElementById('ano');
+            const fechaValoracionInput = document.getElementById('fecha-valoracion');
+            const fechaPbInput = document.getElementById('fecha-pb');
 
+            // --- LÓGICA DE LOGIN Y AUTENTICACIÓN ---
             const showApp = (isLoggedIn) => {
                 loginContainer.classList.toggle('hidden', isLoggedIn);
                 appContainer.classList.toggle('hidden', !isLoggedIn);
             };
+
             netlifyIdentity.on('login', user => {
                 showApp(true);
-                userInfo.textContent = `Bienvenid@, ${user.user_metadata.full_name || user.email}`;
+                welcomeMessage.textContent = `Bienvenida, ${user.user_metadata.full_name || user.email}`;
                 fetchServiceUnits();
                 netlifyIdentity.close();
             });
+
             netlifyIdentity.on('logout', () => {
                 showApp(false);
-                userInfo.textContent = '';
+                welcomeMessage.textContent = '';
                 unitSelector.innerHTML = '<option value="">Seleccione para cargar beneficiarios...</option>';
                 tableBody.innerHTML = '';
             });
 
-            const monthSelector = document.getElementById('mes');
-            const yearInput = document.getElementById('ano');
+            logoutBtn.addEventListener('click', () => {
+                netlifyIdentity.logout();
+            });
+
+            // --- INICIALIZACIÓN DE CAMPOS Y ESTADO ---
             const now = new Date();
             const currentYear = now.getFullYear();
             const currentMonth = now.getMonth();
@@ -217,9 +144,7 @@
                 monthSelector.appendChild(option);
             });
             monthSelector.selectedIndex = currentMonth;
-            
-            const fechaValoracionInput = document.getElementById('fecha-valoracion');
-            const fechaPbInput = document.getElementById('fecha-pb');
+
             fechaValoracionInput.addEventListener('input', () => {
                 fechaPbInput.value = fechaValoracionInput.value;
                 fechaPbInput.readOnly = true;
@@ -228,17 +153,16 @@
             const currentUser = netlifyIdentity.currentUser();
             if (currentUser) {
                 showApp(true);
-                userInfo.textContent = `Bienvenida, ${currentUser.user_metadata.full_name || currentUser.email}`;
+                welcomeMessage.textContent = `Bienvenida, ${currentUser.user_metadata.full_name || currentUser.email}`;
                 fetchServiceUnits();
             } else {
                 showApp(false);
             }
 
+            // --- FUNCIONES AUXILIARES ---
             let audioContext;
             const playBeep = () => {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                }
+                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
                 oscillator.connect(gainNode);
@@ -270,8 +194,7 @@
 
             async function fetchBeneficiaries(unitName) {
                 if (!unitName) {
-                    tableBody.innerHTML = '';
-                    return;
+                    tableBody.innerHTML = ''; return;
                 }
                 loader.classList.remove('hidden');
                 tableBody.innerHTML = '';
@@ -304,13 +227,12 @@
                 });
             }
             
+            // --- EVENTOS DEL FORMULARIO ---
             unitSelector.addEventListener('change', () => fetchBeneficiaries(unitSelector.value));
             
             tableBody.addEventListener('input', (event) => {
                 const input = event.target;
-                if (input.type === 'number' && input.value.includes(',')) {
-                    input.value = input.value.replace(',', '.');
-                }
+                if (input.type === 'number' && input.value.includes(',')) input.value = input.value.replace(',', '.');
                 if (input.name === 'pb') {
                     const value = parseFloat(input.value);
                     if (value < 14) {
@@ -324,9 +246,7 @@
 
             tableBody.addEventListener('change', (event) => {
                 const input = event.target;
-                if (input.name === 'pb' && parseFloat(input.value) < 14) {
-                    alert('Usuario en desnutrición, verifique');
-                }
+                if (input.name === 'pb' && parseFloat(input.value) < 14) alert('Usuario en desnutrición, verifique');
             });
 
             dataForm.addEventListener('submit', async (event) => {
@@ -402,18 +322,13 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(submission)
                     });
-                    if (!response.ok) {
-                        throw new Error('Respuesta del servidor no fue exitosa. Código: ' + response.status);
-                    }
+                    if (!response.ok) throw new Error('Respuesta del servidor no fue exitosa. Código: ' + response.status);
                     
                     alert('¡Datos guardados con éxito!');
-                    // dataForm.reset(); no funciona bien con los campos de fecha sincronizados
-                    // Limpieza manual
                     document.getElementById('fecha-vacunacion').value = '';
                     document.getElementById('fecha-valoracion').value = '';
                     document.getElementById('fecha-pb').value = '';
                     fechaPbInput.readOnly = false;
-
                     tableBody.innerHTML = '';
                     unitSelector.selectedIndex = 0;
                 

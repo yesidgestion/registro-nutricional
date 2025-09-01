@@ -1,13 +1,12 @@
 export default async (req, context) => {
   // VERIFICACIÓN AÑADIDA: Asegurarse de que el visitante está autenticado.
-  // Si context.netlify no existe, significa que no hay sesión.
   if (!context.netlify?.user) {
+    // La propiedad correcta es 'status'
     return new Response("Acceso no autorizado: se requiere autenticación.", {
-      statusCode: 401,
+      status: 401,
     });
   }
 
-  // Esta línea ahora es segura porque ya verificamos que user existe.
   const { user } = context.netlify;
 
   // Lista maestra de todas las unidades de servicio
@@ -28,6 +27,6 @@ export default async (req, context) => {
     const assignedUnits = leadersData[user.id] || [];
     return Response.json(assignedUnits);
   } catch (error) {
-    return new Response(`Error interno: ${error.message}`, { statusCode: 500 });
+    return new Response(`Error interno: ${error.message}`, { status: 500 });
   }
 };
