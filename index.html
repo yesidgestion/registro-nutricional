@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Datos</title>
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f4f8; color: #333; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding: 1rem; }
         .container { width: 100%; max-width: 700px; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -22,9 +21,6 @@
         td { font-size: 0.9rem; }
         td input[type="number"] { padding: 0.5rem; margin-bottom: 0; }
         .hidden { display: none; }
-        #user-info { display: flex; justify-content: space-between; align-items: center; text-align: center; margin-bottom: 1.5rem; color: #555; }
-        #logout-btn { background-color: #6c757d; font-size: 0.8rem; padding: 0.5rem 1rem; width: auto; margin-bottom: 0; }
-        #logout-btn:hover { background-color: #5a6268; }
         #loader { text-align: center; padding: 1rem; }
         .input-warning { color: red; font-weight: bold; }
     </style>
@@ -32,14 +28,8 @@
 <body>
 
     <div class="container">
-        <div id="app-container" class="hidden">
-            <div id="user-info">
-                <span id="welcome-message"></span>
-                <button id="logout-btn">Cerrar Sesión</button>
-            </div>
-            
+        <div id="app-container">
             <h1>Registro de Datos</h1>
-
             <form id="data-form">
                 <div class="global-fields">
                     <div class="grid-2">
@@ -62,7 +52,7 @@
                 
                 <label for="service-unit">Unidad de servicio:</label>
                 <select id="service-unit" name="service-unit" required>
-                    <option value="">Seleccione para cargar beneficiarios...</option>
+                    <option value="">Cargando unidades...</option>
                 </select>
 
                 <div id="loader" class="hidden">Cargando beneficiarios...</div>
@@ -83,20 +73,10 @@
                 <button type="submit">Enviar Registros</button>
             </form>
         </div>
-
-        <div id="login-container">
-            <h1>Bienvenido</h1>
-            <p>Por favor, inicie sesión para registrar los datos.</p>
-            <button data-netlify-identity-button></button>
-        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const loginContainer = document.getElementById('login-container');
-            const appContainer = document.getElementById('app-container');
-            const welcomeMessage = document.getElementById('welcome-message');
-            const logoutBtn = document.getElementById('logout-btn');
             const unitSelector = document.getElementById('service-unit');
             const tableBody = document.getElementById('beneficiaries-table-body');
             const loader = document.getElementById('loader');
@@ -106,29 +86,7 @@
             const fechaValoracionInput = document.getElementById('fecha-valoracion');
             const fechaPbInput = document.getElementById('fecha-pb');
 
-            const showApp = (isLoggedIn) => {
-                loginContainer.classList.toggle('hidden', isLoggedIn);
-                appContainer.classList.toggle('hidden', !isLoggedIn);
-            };
-
-            netlifyIdentity.on('login', user => {
-                showApp(true);
-                welcomeMessage.textContent = `Bienvenida, ${user.user_metadata.full_name || user.email}`;
-                fetchServiceUnits();
-                netlifyIdentity.close();
-            });
-
-            netlifyIdentity.on('logout', () => {
-                showApp(false);
-                welcomeMessage.textContent = '';
-                unitSelector.innerHTML = '<option value="">Seleccione para cargar beneficiarios...</option>';
-                tableBody.innerHTML = '';
-            });
-
-            logoutBtn.addEventListener('click', () => {
-                netlifyIdentity.logout();
-            });
-
+            // --- INICIALIZACIÓN DE CAMPOS ---
             const now = new Date();
             const currentYear = now.getFullYear();
             const currentMonth = now.getMonth();
@@ -146,31 +104,15 @@
                 fechaPbInput.value = fechaValoracionInput.value;
                 fechaPbInput.readOnly = true;
             });
-
-            const currentUser = netlifyIdentity.currentUser();
-            if (currentUser) {
-                showApp(true);
-                welcomeMessage.textContent = `Bienvenida, ${currentUser.user_metadata.full_name || currentUser.email}`;
-                fetchServiceUnits();
-            } else {
-                showApp(false);
-            }
-
+            
+            // --- FUNCIONES Y LÓGICA ---
             let audioContext;
             const playBeep = () => { /* ... código del sonido ... */ };
 
-            async function getAuthHeaders() {
-                const user = netlifyIdentity.currentUser();
-                if (!user) return {};
-                const token = await user.jwt();
-                return { Authorization: `Bearer ${token}` };
-            }
-
             async function fetchServiceUnits() {
                 try {
-		    debugger;
-                    const headers = await getAuthHeaders();
-                    const response = await fetch('/.netlify/functions/get-user-data', { headers });
+                    // La llamada ya no necesita cabeceras de autorización
+                    const response = await fetch('/.netlify/functions/get-user-data');
                     if (!response.ok) throw new Error('Error al cargar las unidades.');
                     const units = await response.json();
                     unitSelector.innerHTML = '<option value="">Seleccione...</option>';
@@ -182,7 +124,7 @@
                     });
                 } catch (error) {
                     console.error(error);
-                    alert('No se pudieron cargar sus unidades de servicio.');
+                    alert('No se pudieron cargar las unidades de servicio.');
                 }
             }
 
@@ -191,8 +133,7 @@
                 loader.classList.remove('hidden');
                 tableBody.innerHTML = '';
                 try {
-                    const headers = await getAuthHeaders();
-                    const response = await fetch(`/.netlify/functions/get-beneficiaries?unit=${unitName}`, { headers });
+                    const response = await fetch(`/.netlify/functions/get-beneficiaries?unit=${unitName}`);
                     if (!response.ok) throw new Error('Error al cargar los beneficiarios.');
                     const beneficiaries = await response.json();
                     renderBeneficiaries(beneficiaries);
@@ -203,13 +144,16 @@
                     loader.classList.add('hidden');
                 }
             }
+            
+            function renderBeneficiaries(beneficiaries) { /* ...código sin cambios... */ }
+            
+            // Cargar las unidades de servicio en cuanto la página esté lista
+            fetchServiceUnits();
 
-            function renderBeneficiaries(beneficiaries) { /* ... código sin cambios ... */ }
-            
+            // --- EVENTOS DEL FORMULARIO ---
             unitSelector.addEventListener('change', () => fetchBeneficiaries(unitSelector.value));
-            
-            tableBody.addEventListener('input', (event) => { /* ... código sin cambios ... */ });
-            tableBody.addEventListener('change', (event) => { /* ... código sin cambios ... */ });
+            tableBody.addEventListener('input', (event) => { /* ... código de validación en tiempo real ... */ });
+            tableBody.addEventListener('change', (event) => { /* ... código de alerta de desnutrición ... */ });
 
             dataForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
@@ -219,23 +163,30 @@
                 const globalData = { /* ... */ };
                 const records = [];
                 rows.forEach(row => { /* ... */ });
-                const submission = { /* ... */ };
+
+                const submission = {
+                    serviceUnit: unitSelector.value,
+                    submissionDate: new Date().toISOString(),
+                    submittedBy: "Formulario Público", // Cambiado
+                    globalData: globalData,
+                    records: records
+                };
                 
                 try {
-                    const headers = await getAuthHeaders();
+                    // La llamada ya no necesita cabeceras de autorización
                     const response = await fetch('/.netlify/functions/save-attendance', {
                         method: 'POST',
-                        headers: { ...headers, 'Content-Type': 'application/json' },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(submission)
                     });
-                    if (!response.ok) throw new Error('Respuesta del servidor no fue exitosa. Código: ' + response.status);
+                    if (!response.ok) throw new Error('Respuesta del servidor no fue exitosa.');
                     
                     alert('¡Datos guardados con éxito!');
                     // ... (código de limpieza del formulario sin cambios)
                 
                 } catch (error) {
                     console.error('Error al enviar:', error);
-                    alert('No se pudieron guardar los datos. Revisa la consola para más detalles.');
+                    alert('No se pudieron guardar los datos.');
                 }
             });
         });
