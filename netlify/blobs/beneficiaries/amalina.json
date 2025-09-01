@@ -19,7 +19,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1118891104,
     "Primer Nombre Beneficiario": "ADRIANA",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "PUSHAINA",
     "Segundo Apellido Beneficiario": "GONZALES"
   },
@@ -35,7 +35,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1124089323,
     "Primer Nombre Beneficiario": "ALBRAINER",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "EPIEYU",
     "Segundo Apellido Beneficiario": "LOPEZ"
   },
@@ -67,7 +67,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1124567511,
     "Primer Nombre Beneficiario": "ANTONELA",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "CASTILLO",
     "Segundo Apellido Beneficiario": "EPINAYU"
   },
@@ -83,7 +83,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1124085859,
     "Primer Nombre Beneficiario": "ARLINSON",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "GONZALEZ",
     "Segundo Apellido Beneficiario": "PUSHAINA"
   },
@@ -107,7 +107,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1124086562,
     "Primer Nombre Beneficiario": "BERNARDO",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "EPIAYU",
     "Segundo Apellido Beneficiario": "VANEGA"
   },
@@ -147,7 +147,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1124097987,
     "Primer Nombre Beneficiario": "DEWARD",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "EPIAYU",
     "Segundo Apellido Beneficiario": "PUSHAINA"
   },
@@ -315,7 +315,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1119415670,
     "Primer Nombre Beneficiario": "JAVIER",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "GONZALEZ",
     "Segundo Apellido Beneficiario": "PUSHAINA"
   },
@@ -411,7 +411,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1124550004,
     "Primer Nombre Beneficiario": "MIRTA",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "EPINAYU",
     "Segundo Apellido Beneficiario": "GONZALEZ"
   },
@@ -517,7 +517,7 @@
     "Primer Nombre Beneficiario": "YEILER",
     "Segundo Nombre Beneficiario": "DUVAN",
     " Primer Apellido Beneficiario": "EPIAYU",
-    "Segundo Apellido Beneficiario": NaN
+    "Segundo Apellido Beneficiario": null
   },
   {
     "Tipo Documento Beneficiario": "RC",
@@ -555,7 +555,7 @@
     "Tipo Documento Beneficiario": "RC",
     "Numero Documento Beneficiario": 1124087152,
     "Primer Nombre Beneficiario": "YERSON",
-    "Segundo Nombre Beneficiario": NaN,
+    "Segundo Nombre Beneficiario": null,
     " Primer Apellido Beneficiario": "IPUANA",
     "Segundo Apellido Beneficiario": "IPUANA"
   },
