@@ -1,32 +1,30 @@
 export default async (req, context) => {
-  // VERIFICACIÓN AÑADIDA: Asegurarse de que el visitante está autenticado.
-  if (!context.netlify?.user) {
-    // La propiedad correcta es 'status'
-    return new Response("Acceso no autorizado: se requiere autenticación.", {
-      status: 401,
+  // Log de diagnóstico #1: El objeto de contexto completo
+  console.log("--- Objeto context ---");
+  console.log(context);
+
+  // Log de diagnóstico #2: Las cabeceras (headers) de la solicitud
+  // Aquí veremos si la cabecera "Authorization" está llegando.
+  console.log("--- Cabeceras (headers) de la solicitud ---");
+  console.log(req.headers);
+
+  // Verificamos si el usuario fue decodificado por Netlify
+  if (context.netlify?.user) {
+    console.log("--- ¡ÉXITO! Usuario decodificado correctamente ---");
+    console.log(context.netlify.user);
+    
+    // Si el usuario existe, devolvemos un mensaje de éxito para la prueba
+    return Response.json({
+      message: "¡Autenticación exitosa!",
+      user: context.netlify.user
     });
-  }
 
-  const { user } = context.netlify;
-
-  // Lista maestra de todas las unidades de servicio
-  const todasLasUnidades = [
-    "AMALINA", "KAISHAIPA", "MULAMANA", "OULECHI",
-    "UNIDAD_5", "UNIDAD_6", "UNIDAD_7", "UNIDAD_8", "UNIDAD_9", "UNIDAD_10"
-  ];
-
-  // Si el usuario tiene el rol 'admin', devolver todas las unidades.
-  if (user.app_metadata.roles?.includes('admin')) {
-    return Response.json(todasLasUnidades);
-  }
-
-  // Si no es admin, buscar sus permisos.
-  try {
-    const store = await context.blobs.getStore("permissions");
-    const leadersData = await store.get("leaders", { type: "json" });
-    const assignedUnits = leadersData[user.id] || [];
-    return Response.json(assignedUnits);
-  } catch (error) {
-    return new Response(`Error interno: ${error.message}`, { status: 500 });
+  } else {
+    console.log("--- ¡FALLO! context.netlify.user no existe ---");
+    
+    // Si el usuario no existe, devolvemos un mensaje de error claro
+    return new Response("Falló la autenticación. El objeto context.netlify.user no fue encontrado en el servidor.", {
+      status: 401
+    });
   }
 };
